@@ -58,10 +58,17 @@ export const arvo = Arvo({ weight: ['400', '700'], subsets: ['latin'], variable:
 export const outfit = Outfit({ subsets: ['latin'], variable: '--font-sans', display: 'swap' })
 
 
+type LoadedFont = {
+    variable: string
+    style: {
+        fontFamily: string
+    }
+}
+
 export type FontOption = {
     name: string
     value: string
-    font: any // generic next/font type
+    font: LoadedFont
     type: 'serif' | 'sans'
 }
 
