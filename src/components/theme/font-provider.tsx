@@ -1,7 +1,13 @@
 "use client"
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import { serifOptions, sansOptions, FontOption } from '@/lib/fonts'
+import {
+    serifOptions,
+    sansOptions,
+    FontOption,
+    DEFAULT_SERIF_FONT,
+    DEFAULT_SANS_FONT,
+} from '@/lib/fonts'
 
 type FontContextType = {
     currentSerif: FontOption
@@ -13,8 +19,12 @@ type FontContextType = {
 const FontContext = createContext<FontContextType | undefined>(undefined)
 
 export function FontProvider({ children }: { children: React.ReactNode }) {
-    const [currentSerif, setCurrentSerif] = useState<FontOption>(serifOptions[0])
-    const [currentSans, setCurrentSans] = useState<FontOption>(sansOptions[0])
+    const [currentSerif, setCurrentSerif] = useState<FontOption>(
+        serifOptions.find((font) => font.value === DEFAULT_SERIF_FONT) ?? serifOptions[0]
+    )
+    const [currentSans, setCurrentSans] = useState<FontOption>(
+        sansOptions.find((font) => font.value === DEFAULT_SANS_FONT) ?? sansOptions[0]
+    )
 
     useEffect(() => {
         // Apply font variables to logic or root if needed, 

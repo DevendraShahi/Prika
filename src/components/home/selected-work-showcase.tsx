@@ -46,6 +46,8 @@ export function SelectedWorkShowcase({
     ],
     [selectedItems]
   )
+  const mobileWorkLimit = 4
+  const mobilePanelLimit = mobileWorkLimit + 2
 
   const containerRef = React.useRef<HTMLElement>(null)
   const stickyRef = React.useRef<HTMLDivElement>(null)
@@ -114,6 +116,24 @@ export function SelectedWorkShowcase({
           y: 0,
           clearProps: "transformOrigin,willChange",
         })
+        rail.style.overflowX = ""
+        track.style.display = ""
+        track.style.position = ""
+        track.style.width = ""
+        track.style.maxWidth = ""
+        track.style.height = ""
+        track.style.marginLeft = ""
+        track.style.marginRight = ""
+        panels.forEach((panel) => {
+          panel.style.position = ""
+          panel.style.left = ""
+          panel.style.top = ""
+          panel.style.width = ""
+          panel.style.maxWidth = ""
+          panel.style.transform = ""
+          panel.style.zIndex = ""
+          panel.style.pointerEvents = ""
+        })
         if (progressBar) {
           gsap.set(progressBar, { scaleX: 1, transformOrigin: "left center" })
         }
@@ -175,27 +195,87 @@ export function SelectedWorkShowcase({
       })
 
       mm.add("(prefers-reduced-motion: no-preference) and (max-width: 1023px)", () => {
-        const introPanel = track.querySelector<HTMLElement>('[data-panel-kind="intro"]')
-        const outroPanel = track.querySelector<HTMLElement>('[data-panel-kind="outro"]')
         const introCue = introScrollCueRef.current
         const cueIcon = introCue?.querySelector<HTMLElement>("[data-cue-icon]")
         const cueLine = introCue?.querySelector<HTMLElement>("[data-cue-line]")
+        const setStickyOpacity = gsap.quickSetter(sticky, "opacity")
+        const setStickyY = gsap.quickSetter(sticky, "y", "px")
+        let mobilePanels: HTMLElement[] = []
+        let panelSetters: Array<{
+          setScale: (value: number) => void
+          setOpacity: (value: number) => void
+          setY: (value: number) => void
+        }> = []
+
+        const collectMobilePanels = () => {
+          mobilePanels = panels.filter(
+            (panel) => window.getComputedStyle(panel).display !== "none"
+          )
+          panelSetters = mobilePanels.map((panel) => ({
+            setScale: gsap.quickSetter(panel, "scale") as (value: number) => void,
+            setOpacity: gsap.quickSetter(panel, "opacity") as (value: number) => void,
+            setY: gsap.quickSetter(panel, "y", "px") as (value: number) => void,
+          }))
+        }
+
+        const applyMobileFocus = () => {
+          const viewportCenter = window.innerHeight * 0.5
+          const focusRange = Math.max(window.innerHeight * 0.56, 360)
+
+          mobilePanels.forEach((panel, index) => {
+            const rect = panel.getBoundingClientRect()
+            const panelCenter = rect.top + rect.height / 2
+            const distance = Math.abs(panelCenter - viewportCenter)
+            const proximity = gsap.utils.clamp(0, 1, 1 - distance / focusRange)
+
+            panelSetters[index].setScale(0.92 + proximity * 0.08)
+            panelSetters[index].setOpacity(0.46 + proximity * 0.54)
+            panelSetters[index].setY((1 - proximity) * 12)
+          })
+        }
+
+        collectMobilePanels()
         gsap.set(track, { x: 0, clearProps: "x,paddingLeft,paddingRight" })
-        gsap.set(panels, {
+        gsap.set(mobilePanels, {
           opacity: 1,
           scale: 1,
           y: 0,
-          clearProps: "transformOrigin,willChange",
+          transformOrigin: "center center",
+          willChange: "transform,opacity",
         })
-        if (introPanel) {
-          introPanel.style.width = ""
-        }
-        if (outroPanel) {
-          outroPanel.style.width = ""
-        }
+        applyMobileFocus()
+
         if (progressBar) {
           gsap.set(progressBar, { scaleX: 0, transformOrigin: "left center" })
         }
+        setStickyOpacity(1)
+        setStickyY(0)
+
+        const focusTrigger = ScrollTrigger.create({
+          trigger: container,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.35,
+          invalidateOnRefresh: true,
+          onRefresh: () => {
+            collectMobilePanels()
+            applyMobileFocus()
+            setStickyOpacity(1)
+            setStickyY(0)
+          },
+          onUpdate: (self) => {
+            applyMobileFocus()
+            const releaseBlend = gsap.utils.clamp(0, 1, (self.progress - 0.94) / 0.06)
+            setStickyOpacity(1 - releaseBlend * 0.05)
+            setStickyY(-releaseBlend * 6)
+          },
+          onLeaveBack: () => {
+            applyMobileFocus()
+            setStickyOpacity(1)
+            setStickyY(0)
+          },
+        })
+
         if (introCue) {
           gsap.set(introCue, { clearProps: "opacity,x,willChange" })
         }
@@ -204,6 +284,14 @@ export function SelectedWorkShowcase({
         }
         if (cueLine) {
           gsap.set(cueLine, { clearProps: "opacity,scaleX,transformOrigin" })
+        }
+
+        return () => {
+          focusTrigger.kill()
+          gsap.set(mobilePanels, {
+            clearProps: "opacity,scale,y,transformOrigin,willChange",
+          })
+          gsap.set(sticky, { clearProps: "opacity,y" })
         }
       })
 
@@ -496,8 +584,8 @@ export function SelectedWorkShowcase({
             ref={subtitleRef}
             className="mx-auto max-w-[52ch] text-sm md:text-base text-muted-foreground leading-relaxed"
           >
-            Scroll down to move through our work. Each piece takes focus as the
-            rail progresses horizontally.
+            Scroll down to move through our work. On mobile, cards rise
+            vertically; on desktop, the rail progresses horizontally.
           </p>
         </div>
 
@@ -511,11 +599,11 @@ export function SelectedWorkShowcase({
 
         <div
           ref={railRef}
-          className="flex-1 flex items-stretch overflow-x-auto lg:overflow-visible px-4 sm:px-6 lg:px-0 pt-3 pb-6 lg:pb-4"
+          className="flex-1 flex items-stretch justify-center lg:justify-start overflow-visible px-4 sm:px-6 lg:px-0 pt-3 pb-6 lg:pb-4"
         >
           <div
             ref={trackRef}
-            className="flex gap-4 sm:gap-6 lg:gap-8 will-change-transform snap-x snap-mandatory lg:snap-none"
+            className="flex w-full flex-col gap-6 sm:gap-8 lg:flex-row lg:gap-8 will-change-transform"
           >
             {showcasePanels.map((panel, index) => (
               <div
@@ -527,10 +615,11 @@ export function SelectedWorkShowcase({
                       : panel.item.id
                 }
                 className={[
-                  "sig-panel shrink-0 snap-center lg:snap-none",
+                  "sig-panel self-center lg:self-auto w-full max-w-[22rem] sm:max-w-[23rem] mx-auto lg:mx-0 lg:shrink-0 lg:max-w-none",
                   panel.type === "work"
-                    ? "w-[78vw] max-w-[20rem] sm:w-[64vw] md:w-[52vw] lg:w-[clamp(19.5rem,24vw,23rem)] xl:w-[clamp(20rem,24vw,24rem)]"
-                    : "w-[92vw] max-w-none sm:w-[88vw] md:w-[82vw] lg:w-auto",
+                    ? "lg:w-[clamp(19.5rem,24vw,23rem)] xl:w-[clamp(20rem,24vw,24rem)]"
+                    : "lg:w-auto",
+                  index >= mobilePanelLimit ? "hidden lg:block" : "",
                 ].join(" ")}
                 data-panel-kind={panel.type}
               >
@@ -610,7 +699,7 @@ function IntroExperienceCard({
           />
         </div>
 
-        <article className="group relative isolate overflow-hidden rounded-xl border border-primary/20 bg-gradient-to-br from-primary/15 via-background to-background p-6 sm:p-7 lg:p-8 shadow-[0_18px_50px_-30px_hsl(var(--primary)/0.55)] min-h-[27rem] md:min-h-[30rem] lg:min-h-[32rem] transition-[transform,box-shadow,border-color,background] duration-500 ease-out hover:-translate-y-1 hover:border-primary/50 hover:from-primary/26 hover:shadow-[0_30px_80px_-44px_hsl(var(--primary)/0.8),0_0_0_1px_hsl(var(--primary)/0.28),0_0_56px_-14px_hsl(var(--primary)/0.62)]">
+        <article className="group relative isolate overflow-hidden rounded-xl border border-primary/20 bg-gradient-to-br from-primary/15 via-background to-background p-6 sm:p-7 lg:p-8 shadow-[0_18px_50px_-30px_hsl(var(--primary)/0.55)] min-h-[21rem] sm:min-h-[23rem] md:min-h-[30rem] lg:min-h-[32rem] transition-[transform,box-shadow,border-color,background] duration-500 ease-out hover:-translate-y-1 hover:border-primary/50 hover:from-primary/26 hover:shadow-[0_30px_80px_-44px_hsl(var(--primary)/0.8),0_0_0_1px_hsl(var(--primary)/0.28),0_0_56px_-14px_hsl(var(--primary)/0.62)]">
           <div className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
             <div className="absolute -top-24 left-1/2 h-56 w-[150%] -translate-x-1/2 rounded-full bg-primary/40 blur-3xl animate-[pulse_2.6s_ease-in-out_infinite]" />
             <div className="absolute -bottom-28 left-1/2 h-52 w-[135%] -translate-x-1/2 rounded-full bg-primary/26 blur-3xl animate-[pulse_3.2s_ease-in-out_infinite]" />
@@ -670,7 +759,7 @@ function IntroExperienceCard({
 
 function FinaleExperienceCard() {
   return (
-    <article className="group relative isolate overflow-hidden rounded-xl border border-border/80 bg-gradient-to-br from-background via-background to-primary/10 p-6 sm:p-7 lg:p-8 shadow-[0_18px_44px_-34px_hsl(var(--foreground)/0.42)] min-h-[27rem] md:min-h-[30rem] lg:min-h-[32rem] transition-[transform,box-shadow,border-color,background] duration-500 ease-out hover:-translate-y-1 hover:border-primary/35 hover:to-primary/18 hover:shadow-[0_28px_70px_-42px_hsl(var(--foreground)/0.62),0_0_0_1px_hsl(var(--primary)/0.2),0_0_48px_-16px_hsl(var(--primary)/0.45)]">
+    <article className="group relative isolate overflow-hidden rounded-xl border border-border/80 bg-gradient-to-br from-background via-background to-primary/10 p-6 sm:p-7 lg:p-8 shadow-[0_18px_44px_-34px_hsl(var(--foreground)/0.42)] min-h-[21rem] sm:min-h-[23rem] md:min-h-[30rem] lg:min-h-[32rem] transition-[transform,box-shadow,border-color,background] duration-500 ease-out hover:-translate-y-1 hover:border-primary/35 hover:to-primary/18 hover:shadow-[0_28px_70px_-42px_hsl(var(--foreground)/0.62),0_0_0_1px_hsl(var(--primary)/0.2),0_0_48px_-16px_hsl(var(--primary)/0.45)]">
       <div className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
         <div className="absolute -top-24 left-1/2 h-52 w-[145%] -translate-x-1/2 rounded-full bg-primary/30 blur-3xl animate-[pulse_2.9s_ease-in-out_infinite]" />
         <div className="absolute -bottom-28 left-1/2 h-[12.5rem] w-[128%] -translate-x-1/2 rounded-full bg-foreground/14 blur-3xl animate-[pulse_3.4s_ease-in-out_infinite]" />

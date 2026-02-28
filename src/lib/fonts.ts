@@ -92,3 +92,6 @@ export const sansOptions: FontOption[] = [
     { name: 'Arvo (Slab)', value: 'arvo', font: arvo, type: 'sans' },
     { name: 'Outfit', value: 'outfit', font: outfit, type: 'sans' },
 ]
+
+export const DEFAULT_SERIF_FONT = 'robinDisplay'
+export const DEFAULT_SANS_FONT = 'dmSans'

@@ -2,8 +2,9 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { Menu, Instagram, Mail, Phone, MapPin, Sparkles } from "lucide-react"
+import { Menu, Instagram, Mail, Phone, MapPin } from "lucide-react"
 import { motion, Variants } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
@@ -63,8 +64,15 @@ export function Navbar() {
         }`}>
             <div className="container mx-auto px-4 md:px-6 flex h-16 items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <Link href="/" className="flex items-center space-x-2">
-                        <span className="font-serif text-3xl md:text-4xl font-light tracking-tight">PRIKA</span>
+                    <Link href="/" className="flex items-center" aria-label="Prika Couture Home">
+                        <Image
+                            src="/prika-logo.png"
+                            alt="Prika Couture logo"
+                            width={196}
+                            height={196}
+                            priority
+                            className="h-12 w-auto md:h-14"
+                        />
                     </Link>
                 </div>
 
@@ -118,9 +126,14 @@ export function Navbar() {
                             >
                                 {/* Header Section */}
                                 <motion.div variants={itemVariants} className="relative px-6 pt-8 pb-6 bg-gradient-to-br from-primary/12 via-background to-background border-b border-border/60">
-                                    <div className="flex items-center gap-2">
-                                        <Sparkles className="h-5 w-5 text-primary" />
-                                        <span className="font-serif text-3xl font-light tracking-wide">PRIKA</span>
+                                    <div className="flex items-center">
+                                        <Image
+                                            src="/prika-logo.png"
+                                            alt="Prika Couture logo"
+                                            width={180}
+                                            height={180}
+                                            className="h-16 w-auto"
+                                        />
                                     </div>
                                     <p className="text-xs text-muted-foreground uppercase tracking-widest mt-2">
                                         Luxury Bridal & Evening Couture House
