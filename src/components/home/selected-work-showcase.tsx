@@ -198,39 +198,45 @@ export function SelectedWorkShowcase({
         const introCue = introScrollCueRef.current
         const cueIcon = introCue?.querySelector<HTMLElement>("[data-cue-icon]")
         const cueLine = introCue?.querySelector<HTMLElement>("[data-cue-line]")
-        const setStickyOpacity = gsap.quickSetter(sticky, "opacity")
-        const setStickyY = gsap.quickSetter(sticky, "y", "px")
         let mobilePanels: HTMLElement[] = []
-        let panelSetters: Array<{
-          setScale: (value: number) => void
-          setOpacity: (value: number) => void
-          setY: (value: number) => void
-        }> = []
+        let rafId: number | null = null
 
         const collectMobilePanels = () => {
           mobilePanels = panels.filter(
             (panel) => window.getComputedStyle(panel).display !== "none"
           )
-          panelSetters = mobilePanels.map((panel) => ({
-            setScale: gsap.quickSetter(panel, "scale") as (value: number) => void,
-            setOpacity: gsap.quickSetter(panel, "opacity") as (value: number) => void,
-            setY: gsap.quickSetter(panel, "y", "px") as (value: number) => void,
-          }))
         }
 
         const applyMobileFocus = () => {
+          if (!mobilePanels.length) {
+            return
+          }
+
           const viewportCenter = window.innerHeight * 0.5
           const focusRange = Math.max(window.innerHeight * 0.56, 360)
 
-          mobilePanels.forEach((panel, index) => {
+          mobilePanels.forEach((panel) => {
             const rect = panel.getBoundingClientRect()
             const panelCenter = rect.top + rect.height / 2
             const distance = Math.abs(panelCenter - viewportCenter)
             const proximity = gsap.utils.clamp(0, 1, 1 - distance / focusRange)
 
-            panelSetters[index].setScale(0.92 + proximity * 0.08)
-            panelSetters[index].setOpacity(0.46 + proximity * 0.54)
-            panelSetters[index].setY((1 - proximity) * 12)
+            gsap.set(panel, {
+              scale: 0.92 + proximity * 0.08,
+              opacity: 0.46 + proximity * 0.54,
+              y: (1 - proximity) * 12,
+            })
+          })
+        }
+
+        const queueMobileFocus = () => {
+          if (rafId !== null) {
+            return
+          }
+          rafId = window.requestAnimationFrame(() => {
+            rafId = null
+            collectMobilePanels()
+            applyMobileFocus()
           })
         }
 
@@ -248,33 +254,7 @@ export function SelectedWorkShowcase({
         if (progressBar) {
           gsap.set(progressBar, { scaleX: 0, transformOrigin: "left center" })
         }
-        setStickyOpacity(1)
-        setStickyY(0)
-
-        const focusTrigger = ScrollTrigger.create({
-          trigger: container,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.35,
-          invalidateOnRefresh: true,
-          onRefresh: () => {
-            collectMobilePanels()
-            applyMobileFocus()
-            setStickyOpacity(1)
-            setStickyY(0)
-          },
-          onUpdate: (self) => {
-            applyMobileFocus()
-            const releaseBlend = gsap.utils.clamp(0, 1, (self.progress - 0.94) / 0.06)
-            setStickyOpacity(1 - releaseBlend * 0.05)
-            setStickyY(-releaseBlend * 6)
-          },
-          onLeaveBack: () => {
-            applyMobileFocus()
-            setStickyOpacity(1)
-            setStickyY(0)
-          },
-        })
+        gsap.set(sticky, { opacity: 1, y: 0 })
 
         if (introCue) {
           gsap.set(introCue, { clearProps: "opacity,x,willChange" })
@@ -286,8 +266,18 @@ export function SelectedWorkShowcase({
           gsap.set(cueLine, { clearProps: "opacity,scaleX,transformOrigin" })
         }
 
+        window.addEventListener("scroll", queueMobileFocus, { passive: true })
+        window.addEventListener("resize", queueMobileFocus)
+        window.addEventListener("orientationchange", queueMobileFocus)
+
         return () => {
-          focusTrigger.kill()
+          window.removeEventListener("scroll", queueMobileFocus)
+          window.removeEventListener("resize", queueMobileFocus)
+          window.removeEventListener("orientationchange", queueMobileFocus)
+          if (rafId !== null) {
+            window.cancelAnimationFrame(rafId)
+            rafId = null
+          }
           gsap.set(mobilePanels, {
             clearProps: "opacity,scale,y,transformOrigin,willChange",
           })

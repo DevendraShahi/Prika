@@ -15,6 +15,13 @@ export function Footer() {
     useGSAP(() => {
         if (!echoLogoRef.current || !echoShimmerRef.current) return
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+        if (window.matchMedia("(max-width: 1023px)").matches) return
+
+        const supportsMask =
+            typeof window.CSS !== "undefined" &&
+            (window.CSS.supports("mask-image", "linear-gradient(black, white)") ||
+                window.CSS.supports("-webkit-mask-image", "linear-gradient(black, white)"))
+        if (!supportsMask) return
 
         const logoEl = echoLogoRef.current
         const shimmerEl = echoShimmerRef.current
