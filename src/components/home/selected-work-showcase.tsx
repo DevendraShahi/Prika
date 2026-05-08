@@ -35,7 +35,7 @@ type ShowcasePanel =
 
 export function SelectedWorkShowcase({
   items,
-  limit = 6,
+  limit = 9,
 }: SelectedWorkShowcaseProps) {
   const selectedItems = React.useMemo(() => items.slice(0, limit), [items, limit])
   const showcasePanels = React.useMemo<ShowcasePanel[]>(
@@ -46,8 +46,7 @@ export function SelectedWorkShowcase({
     ],
     [selectedItems]
   )
-  const mobileWorkLimit = 4
-  const mobilePanelLimit = mobileWorkLimit + 2
+  const mobilePanelLimit = showcasePanels.length
 
   const containerRef = React.useRef<HTMLElement>(null)
   const stickyRef = React.useRef<HTMLDivElement>(null)
@@ -593,7 +592,7 @@ export function SelectedWorkShowcase({
         >
           <div
             ref={trackRef}
-            className="flex w-full flex-col gap-6 sm:gap-8 lg:flex-row lg:gap-8 will-change-transform"
+            className="flex w-full flex-col gap-6 sm:gap-8 lg:flex-row lg:items-center lg:gap-8 will-change-transform"
           >
             {showcasePanels.map((panel, index) => (
               <div

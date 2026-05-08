@@ -186,7 +186,12 @@ export function Footer() {
                         </p>
                         <p className="text-sm text-muted-foreground flex items-center gap-2">
                             <span>Designed and Crafted by</span>
-                            <span className="relative inline-flex items-center gap-2 text-foreground">
+                            <a 
+                                href="https://echo11.tech" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                className="relative inline-flex items-center gap-2 text-foreground hover:opacity-90 transition-opacity"
+                            >
                                 <span
                                     ref={echoLogoRef}
                                     className="echo11-logo relative inline-flex h-[5.5rem] w-[5.5rem] items-center justify-center"
@@ -230,7 +235,7 @@ export function Footer() {
                                     </span>
                                 </span>
                                 <span className="relative font-semibold tracking-wide">Echo11</span>
-                            </span>
+                            </a>
                         </p>
                     </div>
                 </div>

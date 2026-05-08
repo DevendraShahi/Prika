@@ -1,4 +1,10 @@
 import type { Metadata } from "next";
+import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-fullscreen.css";
+import "lightgallery/css/lg-thumbnail.css";
+import "lightgallery/css/lg-video.css";
+import "lightgallery/css/lg-zoom.css";
+import "video.js/dist/video-js.css";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { FontProvider } from "@/components/theme/font-provider";

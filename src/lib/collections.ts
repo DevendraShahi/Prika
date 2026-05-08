@@ -11,26 +11,35 @@ export interface CollectionItem {
 export const collections: CollectionItem[] = [
   {
     id: "1",
-    title: "Eleanor Gown",
-    category: "Bridal",
+    title: "Fusion Peplum Palazzo Suit",
+    category: "Indo-Western",
     description:
-      "A timeless masterpiece featuring intricate lacework and a dramatic train.",
-    media: [{ type: "image", src: "/img/collection/1.jpg" }],
+      "A contemporary peplum silhouette paired with flowing palazzo pants for a refined fusion statement.",
+    media: [
+      { type: "video", src: "/img/collection/1-v.mp4" },
+      { type: "image", src: "/img/collection/1.jpg" },
+      { type: "image", src: "/img/collection/1-1.jpg" },
+      { type: "image", src: "/img/collection/1-2.jpg" },
+    ],
   },
   {
     id: "2",
-    title: "Seraphina Dress",
-    category: "Evening",
+    title: "Imperial Reign Lehenga",
+    category: "Lehenga",
     description:
-      "Contemporary elegance meets traditional craftsmanship with hand-embroidered detail.",
-    media: [{ type: "image", src: "/img/collection/2.jpg" }],
+      "A regal lehenga with ornate detailing, designed for grand entrances and ceremonial moments.",
+    media: [
+      { type: "video", src: "/img/collection/2-v.mp4" },
+      { type: "image", src: "/img/collection/2.jpg" },
+      { type: "image", src: "/img/collection/2-1.jpg" },
+    ],
   },
   {
     id: "3",
-    title: "Royal Heritage",
-    category: "Bridal",
+    title: "Brocade Anarkali Gown",
+    category: "Anarkali",
     description:
-      "Inspired by royal traditions with exquisite embellishments and rich fabrics.",
+      "A brocade Anarkali gown shaped with graceful volume and heritage-inspired texture.",
     media: [
       { type: "video", src: "/img/collection/3-v.mp4" },
       { type: "image", src: "/img/collection/3.jpg" },
@@ -40,18 +49,18 @@ export const collections: CollectionItem[] = [
   },
   {
     id: "4",
-    title: "Ethereal Motion",
-    category: "Evening",
+    title: "Imperial Bauble",
+    category: "Statement",
     description:
-      "A fluid silhouette with lightweight layers for a dreamy movement-focused look.",
+      "A statement couture piece with jewel-like presence and polished occasionwear drama.",
     media: [{ type: "video", src: "/img/collection/4-v.mp4" }],
   },
   {
     id: "5",
-    title: "Vintage Glamour",
-    category: "Bridal",
+    title: "Bridesmaid Kurti (Kurta)",
+    category: "Bridesmaid",
     description:
-      "A nod to old Hollywood with art deco inspiration and luxurious textures.",
+      "A bridesmaid kurti design with clean tailoring, festive detail, and easy celebratory movement.",
     media: [
       { type: "image", src: "/img/collection/5.jpg" },
       { type: "image", src: "/img/collection/5-1.jpg" },
@@ -61,14 +70,45 @@ export const collections: CollectionItem[] = [
   },
   {
     id: "6",
-    title: "Modern Chic",
-    category: "Bridal",
+    title: "Amber Wave",
+    category: "Occasionwear",
     description:
-      "Architectural structure meets romantic softness for the contemporary bride.",
+      "Warm amber tones and fluid styling come together in an occasion-ready wave of movement.",
     media: [
       { type: "video", src: "/img/collection/6-v.mp4" },
       { type: "image", src: "/img/collection/6.jpg" },
       { type: "image", src: "/img/collection/6-1.jpg" },
     ],
+  },
+  {
+    id: "7",
+    title: "Pearl Paradise",
+    category: "Embellished",
+    description:
+      "Pearl-inspired embellishment and soft couture detailing create a luminous special-occasion look.",
+    media: [
+      { type: "video", src: "/img/collection/7-v.mp4" },
+      { type: "image", src: "/img/collection/7.jpg" },
+      { type: "image", src: "/img/collection/7-1.jpg" },
+    ],
+  },
+  {
+    id: "8",
+    title: "Amber Wave",
+    category: "Occasionwear",
+    description:
+      "A second Amber Wave edit focused on motion, shimmer, and sculpted drape through video-led styling.",
+    media: [
+      { type: "video", src: "/img/collection/8-v.mp4" },
+      { type: "video", src: "/img/collection/8-v1.mp4" },
+    ],
+  },
+  {
+    id: "9",
+    title: "Ruby Bloom",
+    category: "Floral",
+    description:
+      "A ruby-toned bloom of festive couture, balancing floral romance with a polished statement finish.",
+    media: [{ type: "image", src: "/img/collection/9.webp" }],
   },
 ]

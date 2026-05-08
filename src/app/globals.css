@@ -152,3 +152,296 @@ html {
 .dark ::-webkit-scrollbar-thumb:hover {
   background: oklch(0.5 0 0);
 }
+
+/* ── Prika LightGallery Theme ─────────────────────────────────────── */
+
+/* Backdrop */
+.lg-backdrop {
+  background:
+    radial-gradient(ellipse at 22% 6%, rgb(255 255 255 / 6%), transparent 28%),
+    radial-gradient(ellipse at 76% 88%, rgb(200 168 140 / 8%), transparent 32%),
+    rgb(7 6 5 / 97%);
+}
+
+.prika-lightgallery.lg-outer {
+  background: transparent;
+  font-family: var(--font-sans);
+}
+
+/* Content area */
+.prika-lightgallery .lg-content {
+  top: 4.5rem;
+  bottom: 10rem;
+}
+
+.prika-lightgallery .lg-inner {
+  /* lg-inner is position:absolute; margin-inline:auto doesn't work here.
+     Keep it full width — centering is done on the child elements below. */
+  width: 100%;
+  max-width: 100vw;
+}
+
+.prika-lightgallery .lg-item {
+  /* horizontal padding gives breathing room on wide screens */
+  padding-inline: clamp(4rem, 8vw, 10rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prika-lightgallery .lg-img-wrap {
+  /* Fill the padded item area; center the image within it */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inset-inline: clamp(4rem, 8vw, 10rem);
+  width: auto;
+}
+
+/* Images */
+.prika-lightgallery .lg-object.lg-image {
+  display: block;
+  margin-inline: auto;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 14px;
+  background: #060504;
+  box-shadow: 0 32px 96px rgb(0 0 0 / 60%);
+  max-width: min(100%, 900px);
+  max-height: calc(100dvh - 15rem);
+  object-fit: contain;
+}
+
+/* Video container */
+.prika-lightgallery .lg-video-cont {
+  overflow: hidden;
+  /* Center the video container horizontally inside the item */
+  margin-inline: auto;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 14px;
+  background: #060504;
+  box-shadow: 0 32px 96px rgb(0 0 0 / 60%);
+  width: min(40vw, 440px) !important;
+  max-width: calc(100vw - 8rem);
+  height: min(72dvh, 740px) !important;
+  max-height: calc(100dvh - 15rem);
+}
+
+.prika-lightgallery .lg-html5 video,
+.prika-lightgallery .lg-video-object {
+  width: 100%;
+  height: 100%;
+  max-height: calc(100dvh - 15rem);
+  border-radius: 14px;
+  background: #000;
+  object-fit: contain;
+}
+
+
+
+/* Toolbar pill */
+.prika-lightgallery .lg-toolbar {
+  top: 1rem;
+  right: 1rem;
+  left: auto;
+  width: auto;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 7%);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 28%);
+}
+
+.prika-lightgallery .lg-counter {
+  height: 2.75rem;
+  padding: 0 1rem;
+  color: rgb(255 255 255 / 60%);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  line-height: 2.75rem;
+}
+
+.prika-lightgallery .lg-icon {
+  color: rgb(255 255 255 / 78%);
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.prika-lightgallery .lg-icon:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+/* Prev / Next arrows */
+.prika-lightgallery .lg-actions .lg-prev,
+.prika-lightgallery .lg-actions .lg-next {
+  width: 3rem;
+  height: 3rem;
+  margin-top: -1.5rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 7%);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 28%);
+  transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+
+.prika-lightgallery .lg-actions .lg-prev:hover,
+.prika-lightgallery .lg-actions .lg-next:hover {
+  background: rgb(255 255 255 / 14%);
+  border-color: rgb(255 255 255 / 22%);
+}
+
+.prika-lightgallery .lg-actions .lg-prev {
+  left: max(1rem, calc((100vw - 1280px) / 2));
+}
+
+.prika-lightgallery .lg-actions .lg-next {
+  right: max(1rem, calc((100vw - 1280px) / 2));
+}
+
+/* Bottom bar (sub-html + thumbnails) */
+.prika-lightgallery .lg-components {
+  background: rgb(5 5 4 / 80%);
+  border-top: 1px solid rgb(255 255 255 / 8%);
+  backdrop-filter: blur(20px);
+}
+
+.prika-lightgallery .lg-sub-html {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  min-height: 4rem;
+  padding: 0.75rem 1.25rem 0.4rem;
+  color: #fff;
+  background: transparent;
+  pointer-events: none;
+}
+
+/* Caption */
+.prika-lg-caption {
+  width: min(100%, 44rem);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.prika-lg-caption p {
+  margin: 0 0 0.25rem;
+  color: rgb(255 255 255 / 62%);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.prika-lg-caption h4 {
+  margin: 0;
+  color: #fff;
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 1.8vw, 1.8rem);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: 0;
+}
+
+/* Thumbnails */
+.prika-lightgallery .lg-thumb-outer {
+  background: transparent;
+}
+
+.prika-lightgallery .lg-thumb {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  padding: 0.5rem 0 0.65rem;
+}
+
+.prika-lightgallery .lg-thumb-item {
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 8px;
+  opacity: 0.55;
+  transition: border-color 180ms ease, opacity 180ms ease, transform 180ms ease;
+}
+
+.prika-lightgallery .lg-thumb-item.active,
+.prika-lightgallery .lg-thumb-item:hover {
+  border-color: rgb(255 255 255 / 68%);
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.prika-lightgallery .lg-video-play-button {
+  border: 1px solid rgb(255 255 255 / 32%);
+  border-radius: 999px;
+  background: rgb(0 0 0 / 26%);
+  backdrop-filter: blur(14px);
+}
+
+/* ── Mobile overrides ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .prika-lightgallery .lg-content {
+    top: 4rem;
+    bottom: 9rem;
+  }
+
+  .prika-lightgallery .lg-item {
+    padding-inline: 1rem;
+  }
+
+  .prika-lightgallery .lg-img-wrap {
+    inset-inline: 1rem;
+  }
+
+  .prika-lightgallery .lg-object.lg-image {
+    max-height: calc(100dvh - 13rem);
+  }
+
+  .prika-lightgallery .lg-video-cont {
+    width: min(88vw, 400px) !important;
+    height: min(65dvh, 700px) !important;
+    max-width: calc(100vw - 1.5rem);
+    max-height: calc(100dvh - 13rem);
+  }
+
+  .prika-lightgallery .lg-html5 video,
+  .prika-lightgallery .lg-video-object {
+    max-height: calc(100dvh - 13rem);
+  }
+
+  .prika-lightgallery .lg-toolbar {
+    top: 0.6rem;
+    right: 0.6rem;
+  }
+
+  .prika-lightgallery .lg-actions .lg-prev,
+  .prika-lightgallery .lg-actions .lg-next {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-top: -1.25rem;
+  }
+
+  .prika-lightgallery .lg-actions .lg-prev {
+    left: 0.4rem;
+  }
+
+  .prika-lightgallery .lg-actions .lg-next {
+    right: 0.4rem;
+  }
+
+  .prika-lightgallery .lg-sub-html {
+    min-height: 3.75rem;
+    padding: 0.6rem 0.85rem 0.3rem;
+  }
+
+  .prika-lg-caption p {
+    font-size: 0.63rem;
+    letter-spacing: 0.18em;
+  }
+
+  .prika-lg-caption h4 {
+    font-size: 1.05rem;
+  }
+
+
+}
+
