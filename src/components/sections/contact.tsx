@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { Separator } from "@/components/ui/separator"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Map, MapMarker, MarkerContent, MapControls } from "@/components/ui/map"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -306,19 +307,20 @@ export function Contact() {
                             </CardContent>
                         </Card>
 
-                        {/* Map Placeholder */}
+                        {/* Map */}
                         <Card className="border-0 shadow-md overflow-hidden bg-card">
                             <div className="relative aspect-video bg-muted">
-                                <iframe
-                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.0391096749897!2d85.31234567544708!3d27.717239625619096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb18fcf2c6f565%3A0x51c0b30d8b7b53a7!2sKathmandu%2C%20Nepal!5e0!3m2!1sen!2snp!4v1234567890"
-                                    width="100%"
-                                    height="100%"
-                                    style={{ border: 0 }}
-                                    allowFullScreen
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    className="absolute inset-0"
-                                />
+                                <Map
+                                    center={[85.324, 27.7172]}
+                                    zoom={12}
+                                >
+                                    <MapMarker longitude={85.324} latitude={27.7172}>
+                                        <MarkerContent>
+                                            <div className="w-4 h-4 rounded-full bg-primary border-2 border-white shadow-lg" />
+                                        </MarkerContent>
+                                    </MapMarker>
+                                    <MapControls showZoom={false} />
+                                </Map>
                             </div>
                         </Card>
                     </motion.div>

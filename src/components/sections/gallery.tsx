@@ -266,7 +266,7 @@ export function Gallery() {
                     <div
                         role="group"
                         aria-label="Filter by category"
-                        className="flex flex-wrap items-center justify-center gap-2"
+                        className="flex items-center gap-2 overflow-x-auto pb-2 max-w-full scrollbar-hide [-webkit-overflow-scrolling:touch]"
                     >
                         {["all", ...ALL_CATEGORIES].map((cat) => (
                             <button
@@ -275,7 +275,7 @@ export function Gallery() {
                                 onClick={() => setSelectedCategory(cat)}
                                 aria-pressed={selectedCategory === cat}
                                 className={cn(
-                                    "relative px-4 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                                    "relative px-3 sm:px-4 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring whitespace-nowrap",
                                     selectedCategory === cat
                                         ? "bg-foreground text-background shadow-md"
                                         : "bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground"

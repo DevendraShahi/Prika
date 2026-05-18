@@ -2,7 +2,9 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { ArrowRight, Compass, Sparkles } from "lucide-react"
+import {
+  ArrowRight,
+} from "lucide-react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { useGSAP } from "@gsap/react"
@@ -222,7 +224,7 @@ export function SelectedWorkShowcase({
 
             gsap.set(panel, {
               scale: 0.92 + proximity * 0.08,
-              opacity: 0.46 + proximity * 0.54,
+              opacity: 1,
               y: (1 - proximity) * 12,
             })
           })
@@ -427,7 +429,7 @@ export function SelectedWorkShowcase({
             const proximity = gsap.utils.clamp(0, 1, 1 - distance / focusRadius)
 
             panel.setScale(0.88 + proximity * 0.12)
-            panel.setOpacity(0.38 + proximity * 0.62)
+            panel.setOpacity(1)
             panel.setY((1 - proximity) * 16)
           })
         }
@@ -553,7 +555,7 @@ export function SelectedWorkShowcase({
     <section ref={containerRef} id="signature-edit" className="relative">
       <div
         ref={stickyRef}
-        className="w-full flex flex-col overflow-hidden border-y border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 lg:h-screen"
+        className="w-full flex flex-col overflow-hidden border-y border-border/50 bg-background lg:h-screen"
       >
         <div className="shrink-0 pt-10 md:pt-12 pb-6 px-6 md:px-10 lg:px-12 text-center">
           <p
@@ -600,14 +602,14 @@ export function SelectedWorkShowcase({
                   panel.type === "intro"
                     ? "intro-launch-card"
                     : panel.type === "outro"
-                      ? "outro-close-card"
+                      ? "outro-conversion-card"
                       : panel.item.id
                 }
                 className={[
                   "sig-panel self-center lg:self-auto w-full max-w-[22rem] sm:max-w-[23rem] mx-auto lg:mx-0 lg:shrink-0 lg:max-w-none",
                   panel.type === "work"
                     ? "lg:w-[clamp(19.5rem,24vw,23rem)] xl:w-[clamp(20rem,24vw,24rem)]"
-                    : "lg:w-auto",
+                    : "lg:w-[clamp(22rem,30vw,27rem)]",
                   index >= mobilePanelLimit ? "hidden lg:block" : "",
                 ].join(" ")}
                 data-panel-kind={panel.type}
@@ -619,20 +621,19 @@ export function SelectedWorkShowcase({
                   <span className="h-px flex-1 bg-border/60" />
                   <span className="text-xs uppercase tracking-widest text-muted-foreground">
                     {panel.type === "intro"
-                      ? "Start Here"
+                      ? "Dossier"
                       : panel.type === "outro"
-                        ? "Finale"
+                        ? "Concierge"
                         : panel.item.category}
                   </span>
                 </div>
 
                 {panel.type === "intro" ? (
-                  <IntroExperienceCard
-                    totalLooks={selectedItems.length}
+                  <IntroImpactCard
                     scrollCueRef={introScrollCueRef}
                   />
                 ) : panel.type === "outro" ? (
-                  <FinaleExperienceCard />
+                  <OutroConversionCard />
                 ) : (
                   <CollectionCard
                     id={panel.item.id}
@@ -660,138 +661,50 @@ export function SelectedWorkShowcase({
   )
 }
 
-function IntroExperienceCard({
-  totalLooks,
+function IntroImpactCard({
   scrollCueRef,
 }: {
-  totalLooks: number
   scrollCueRef: React.RefObject<HTMLDivElement | null>
 }) {
   return (
-    <div className="w-full">
-      <div className="relative mx-auto w-full lg:max-w-[31rem]">
-        <div
-          ref={scrollCueRef}
-          aria-hidden="true"
-          className="intro-scroll-cue pointer-events-none hidden lg:flex absolute top-1/2 -left-28 -translate-y-1/2 items-center gap-3"
-        >
-          <span className="text-[10px] uppercase tracking-[0.26em] text-muted-foreground">
-            Scroll
-          </span>
-          <span
-            data-cue-line
-            className="h-px w-14 bg-primary/55 origin-left"
-          />
-          <ArrowRight
-            data-cue-icon
-            className="h-4 w-4 text-primary/90"
-          />
-        </div>
+    <div className="relative mx-auto w-full">
+      <div
+        ref={scrollCueRef}
+        aria-hidden="true"
+        className="intro-scroll-cue pointer-events-none hidden lg:flex absolute top-1/2 -left-28 -translate-y-1/2 items-center gap-3"
+      >
+        <span className="text-[10px] uppercase tracking-[0.26em] text-muted-foreground">
+          Scroll
+        </span>
+        <span data-cue-line className="h-px w-14 bg-primary/60 origin-left" />
+        <ArrowRight data-cue-icon className="h-4 w-4 text-primary" />
+      </div>
 
-        <article className="group relative isolate overflow-hidden rounded-xl border border-primary/20 bg-gradient-to-br from-primary/15 via-background to-background p-6 sm:p-7 lg:p-8 shadow-[0_18px_50px_-30px_hsl(var(--primary)/0.55)] min-h-[21rem] sm:min-h-[23rem] md:min-h-[30rem] lg:min-h-[32rem] transition-[transform,box-shadow,border-color,background] duration-500 ease-out hover:-translate-y-1 hover:border-primary/50 hover:from-primary/26 hover:shadow-[0_30px_80px_-44px_hsl(var(--primary)/0.8),0_0_0_1px_hsl(var(--primary)/0.28),0_0_56px_-14px_hsl(var(--primary)/0.62)]">
-          <div className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-            <div className="absolute -top-24 left-1/2 h-56 w-[150%] -translate-x-1/2 rounded-full bg-primary/40 blur-3xl animate-[pulse_2.6s_ease-in-out_infinite]" />
-            <div className="absolute -bottom-28 left-1/2 h-52 w-[135%] -translate-x-1/2 rounded-full bg-primary/26 blur-3xl animate-[pulse_3.2s_ease-in-out_infinite]" />
-          </div>
-          <div className="pointer-events-none absolute inset-0 z-0 rounded-xl ring-1 ring-primary/45 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          <div className="pointer-events-none absolute -top-20 -right-16 z-0 h-44 w-44 rounded-full bg-primary/18 blur-3xl transition-all duration-500 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:bg-primary/24 group-hover:animate-[pulse_3.2s_ease-in-out_infinite]" />
-          <div className="pointer-events-none absolute -bottom-16 -left-14 z-0 h-40 w-40 rounded-full bg-primary/12 blur-3xl transition-all duration-500 group-hover:translate-y-1 group-hover:-translate-x-1 group-hover:bg-primary/18 group-hover:animate-[pulse_3.6s_ease-in-out_infinite]" />
-
-          <div className="relative z-10 flex h-full flex-col">
-            <p className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/35 bg-background/70 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-primary transition-colors duration-300 group-hover:border-primary/55 group-hover:bg-background/90">
-              <Sparkles className="h-3.5 w-3.5" />
-              Signature Start
-            </p>
-
-            <h3 className="mt-5 font-serif text-2xl md:text-[1.8rem] leading-tight transition-colors duration-300 group-hover:text-primary">
-              Discover Every Detail Before You Dive In
-            </h3>
-            <p className="mt-3 text-sm md:text-base text-muted-foreground leading-relaxed max-w-[34ch]">
-              Begin with this guided panel, then flow through selected creations or
-              jump straight to the full collection for a deeper experience.
-            </p>
-
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <div className="rounded-lg border border-border/65 bg-background/75 p-3 transition-colors duration-300 group-hover:border-primary/30 group-hover:bg-background/90">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                  Featured Looks
-                </p>
-                <p className="mt-1 text-lg font-medium tabular-nums text-foreground">
-                  {String(totalLooks).padStart(2, "0")}
-                </p>
-              </div>
-              <div className="rounded-lg border border-border/65 bg-background/75 p-3 transition-colors duration-300 group-hover:border-primary/30 group-hover:bg-background/90">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-                  Motion + Stills
-                </p>
-                <p className="mt-1 text-lg font-medium text-foreground">Curated</p>
-              </div>
-            </div>
-
-            <div className="mt-auto pt-8 flex flex-wrap gap-3">
-              <Button asChild size="sm" className="group rounded-full px-5">
-                <Link href="/collections">
-                  Explore All
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                </Link>
-              </Button>
-              <Button asChild size="sm" variant="outline" className="rounded-full px-5">
-                <Link href="/atelier">Visit Atelier</Link>
-              </Button>
-            </div>
-          </div>
-        </article>
+      <div className="flex flex-col items-center gap-4">
+        <img
+          src="/illustration/fashion-shop/fashion-shop-not-css.svg"
+          alt="Fashion shop illustration"
+          className="w-full max-w-md"
+        />
+        <p className="text-sm text-muted-foreground text-center max-w-sm">
+          Where Style Meets Storytelling
+        </p>
       </div>
     </div>
   )
 }
 
-function FinaleExperienceCard() {
+function OutroConversionCard() {
   return (
-    <article className="group relative isolate overflow-hidden rounded-xl border border-border/80 bg-gradient-to-br from-background via-background to-primary/10 p-6 sm:p-7 lg:p-8 shadow-[0_18px_44px_-34px_hsl(var(--foreground)/0.42)] min-h-[21rem] sm:min-h-[23rem] md:min-h-[30rem] lg:min-h-[32rem] transition-[transform,box-shadow,border-color,background] duration-500 ease-out hover:-translate-y-1 hover:border-primary/35 hover:to-primary/18 hover:shadow-[0_28px_70px_-42px_hsl(var(--foreground)/0.62),0_0_0_1px_hsl(var(--primary)/0.2),0_0_48px_-16px_hsl(var(--primary)/0.45)]">
-      <div className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-        <div className="absolute -top-24 left-1/2 h-52 w-[145%] -translate-x-1/2 rounded-full bg-primary/30 blur-3xl animate-[pulse_2.9s_ease-in-out_infinite]" />
-        <div className="absolute -bottom-28 left-1/2 h-[12.5rem] w-[128%] -translate-x-1/2 rounded-full bg-foreground/14 blur-3xl animate-[pulse_3.4s_ease-in-out_infinite]" />
-      </div>
-      <div className="pointer-events-none absolute inset-0 z-0 rounded-xl ring-1 ring-primary/30 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-      <div className="pointer-events-none absolute -top-16 -left-16 z-0 h-40 w-40 rounded-full bg-primary/14 blur-3xl transition-all duration-500 group-hover:-translate-y-1 group-hover:-translate-x-1 group-hover:bg-primary/20 group-hover:animate-[pulse_3.2s_ease-in-out_infinite]" />
-      <div className="pointer-events-none absolute -bottom-24 -right-20 z-0 h-52 w-52 rounded-full bg-foreground/10 blur-3xl transition-all duration-500 group-hover:translate-y-1 group-hover:translate-x-1 group-hover:bg-foreground/14 group-hover:animate-[pulse_3.8s_ease-in-out_infinite]" />
-
-      <div className="relative z-10 flex h-full flex-col">
-        <p className="inline-flex w-fit items-center gap-2 rounded-full border border-border/80 bg-background/75 px-3 py-1 text-[11px] uppercase tracking-[0.24em] text-muted-foreground transition-colors duration-300 group-hover:border-primary/30 group-hover:bg-background/90">
-          <Compass className="h-3.5 w-3.5 text-primary" />
-          Your Next Step
-        </p>
-
-        <h3 className="mt-5 font-serif text-2xl md:text-[1.8rem] leading-tight transition-colors duration-300 group-hover:text-primary">
-          End Of Showcase, Start Of Your Story
-        </h3>
-        <p className="mt-3 text-sm md:text-base text-muted-foreground leading-relaxed max-w-[34ch]">
-          You&apos;ve seen the signature pieces. Move forward with a private
-          consultation or explore every collection in one place.
-        </p>
-
-        <div className="mt-6 rounded-lg border border-border/70 bg-background/80 p-4 transition-colors duration-300 group-hover:border-primary/25 group-hover:bg-background/90">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            Crafted Experience
-          </p>
-          <p className="mt-2 text-sm text-foreground">
-            Personal fittings, editorial styling, and couture-level execution.
-          </p>
-        </div>
-
-        <div className="mt-auto pt-8 flex flex-wrap gap-3">
-          <Button asChild size="sm" className="group rounded-full px-5">
-            <Link href="/contact">
-              Book Consultation
-              <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </Link>
-          </Button>
-          <Button asChild size="sm" variant="outline" className="rounded-full px-5">
-            <Link href="/collections">See Every Collection</Link>
-          </Button>
-        </div>
-      </div>
-    </article>
+    <div className="flex flex-col items-center gap-4">
+      <img
+        src="/illustration/choosing-clothes/choosing-clothes-not-css.svg"
+        alt="Choosing clothes illustration"
+        className="w-full max-w-md"
+      />
+      <p className="text-sm text-muted-foreground text-center max-w-sm">
+        Let's Craft Your Perfect Look
+      </p>
+    </div>
   )
 }

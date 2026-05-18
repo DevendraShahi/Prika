@@ -1,0 +1,56 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anomalyco/opencode/main/opencode.schema.json",
+  "plugins": {
+    "oh-my-opencode": {
+      "enabled": true
+    },
+    "opencode-notify": {
+      "enabled": true
+    },
+    "opencode-worktree": {
+      "enabled": true
+    },
+    "opencode-snip": {
+      "enabled": true
+    },
+    "opencode-mem": {
+      "enabled": true
+    },
+    "opencode-quota": {
+      "enabled": true
+    },
+    "context-analysis": {
+      "enabled": true
+    },
+    "background": {
+      "enabled": true
+    },
+    "opencode-sessions": {
+      "enabled": true
+    },
+    "opencode-handoff": {
+      "enabled": true
+    },
+    "froggy": {
+      "enabled": true
+    },
+    "dynamic-context-pruning": {
+      "enabled": true
+    },
+    "agent-identity": {
+      "enabled": true
+    },
+    "model-announcer": {
+      "enabled": true
+    },
+    "opencode-ignore": {
+      "enabled": true
+    }
+  },
+  "skills": [
+    {
+      "name": "frontend-design",
+      "url": "file:///Users/devendrashahithakuri/.agents/skills/frontend-design"
+    }
+  ]
+}

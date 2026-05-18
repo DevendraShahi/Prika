@@ -119,6 +119,12 @@
   body {
     @apply bg-background text-foreground;
   }
+  .maplibregl-popup-content {
+    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+  }
+  .maplibregl-popup-tip {
+    @apply hidden!;
+  }
 }
 
 /* Smooth scrolling */
@@ -235,8 +241,6 @@ html {
   background: #000;
   object-fit: contain;
 }
-
-
 
 /* Toolbar pill */
 .prika-lightgallery .lg-toolbar {
@@ -442,6 +446,4 @@ html {
     font-size: 1.05rem;
   }
 
-
 }
-

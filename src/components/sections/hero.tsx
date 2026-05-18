@@ -21,6 +21,7 @@ export function Hero() {
         : "dark"
 
     const isDark = effectiveTheme === "dark"
+    const overlaysEnabled = false
 
     return (
         <section id="home" className="relative h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
@@ -33,9 +34,7 @@ export function Hero() {
                     playsInline
                     className={cn(
                         "h-full w-full object-cover transition-[filter] duration-1000 ease-out",
-                        // Light theme: bright, warm, dreamy
-                        !isDark && "brightness-[1.15] contrast-[0.95] saturate-[0.85] sepia-[0.08]",
-                        // Dark theme: cinematic, dramatic, moody
+                        // Dark mode only: cinematic tuning
                         isDark && "brightness-[0.85] contrast-[1.15] saturate-[1.1]"
                     )}
                 >
@@ -43,142 +42,121 @@ export function Hero() {
                 </video>
             </div>
 
-            {/* Filter Layer 1 - Color Treatment */}
-            <div 
+            {/* Subtle readability overlay */}
+            <div
                 className={cn(
-                    "absolute inset-0 -z-25 transition-all duration-1000 ease-out",
-                    // Light: Warm golden undertone
-                    !isDark && "bg-gradient-to-br from-amber-100/50 via-transparent to-orange-50/30 mix-blend-color",
-                    // Dark: Cool cinematic undertone  
-                    isDark && "bg-gradient-to-br from-slate-900/60 via-transparent to-indigo-950/50 mix-blend-multiply"
+                    "absolute inset-0 -z-20 pointer-events-none transition-all duration-700",
+                    !isDark && "bg-[radial-gradient(ellipse_at_50%_42%,rgba(0,0,0,0.12)_0%,rgba(0,0,0,0.20)_46%,rgba(0,0,0,0.30)_100%)]",
+                    isDark && "bg-[radial-gradient(ellipse_at_50%_42%,rgba(0,0,0,0.20)_0%,rgba(0,0,0,0.38)_46%,rgba(0,0,0,0.56)_100%)]"
                 )}
             />
 
-            {/* Filter Layer 2 - Soft Light Enhancement */}
-            <div 
-                className={cn(
-                    "absolute inset-0 -z-20 transition-all duration-1000 ease-out",
-                    !isDark && "bg-white/30 mix-blend-soft-light",
-                    isDark && "bg-black/10 mix-blend-multiply"
-                )}
-            />
+            {overlaysEnabled && (
+                <>
+                    {/* Base atmosphere: layered tonal veil for legibility and mood */}
+                    <div
+                        className="absolute inset-0 -z-20 pointer-events-none transition-opacity duration-700"
+                        style={{
+                            background: isDark
+                                ? "linear-gradient(130deg, rgba(5,8,20,0.78) 0%, rgba(11,17,35,0.34) 46%, rgba(7,9,23,0.82) 100%), radial-gradient(circle at 22% 12%, rgba(96,165,250,0.22) 0%, transparent 44%), radial-gradient(circle at 78% 86%, rgba(244,114,182,0.2) 0%, transparent 42%)"
+                                : "linear-gradient(128deg, rgba(255,246,229,0.36) 0%, rgba(255,255,255,0.05) 44%, rgba(255,236,244,0.28) 100%), radial-gradient(circle at 18% 14%, rgba(255,255,255,0.34) 0%, transparent 46%), radial-gradient(circle at 82% 88%, rgba(255,223,196,0.25) 0%, transparent 48%)"
+                        }}
+                    />
 
-            {/* Primary Gradient Overlay */}
-            <div 
-                className={cn(
-                    "absolute inset-0 -z-15 transition-all duration-1000 ease-out",
-                    // Light: Soft white gradient with warm edges
-                    !isDark && "bg-gradient-to-b from-white/85 via-white/50 to-white/90",
-                    // Dark: Rich black gradient with subtle color
-                    isDark && "bg-gradient-to-b from-black/70 via-black/40 to-black/75"
-                )}
-            />
+                    {/* Prismatic couture sweep */}
+                    <motion.div
+                        className={cn(
+                            "absolute -inset-[18%] -z-10 pointer-events-none blur-3xl transition-opacity duration-700",
+                            isDark ? "mix-blend-screen opacity-70" : "mix-blend-soft-light opacity-80"
+                        )}
+                        style={{
+                            background: isDark
+                                ? "conic-gradient(from 210deg at 50% 50%, rgba(56,189,248,0) 0deg, rgba(56,189,248,0.24) 62deg, rgba(167,139,250,0) 125deg, rgba(244,114,182,0.2) 188deg, rgba(45,212,191,0.18) 254deg, rgba(56,189,248,0) 360deg)"
+                                : "conic-gradient(from 215deg at 50% 50%, rgba(255,184,130,0) 0deg, rgba(255,184,130,0.27) 56deg, rgba(255,255,255,0) 116deg, rgba(255,158,206,0.23) 188deg, rgba(147,197,253,0.2) 255deg, rgba(255,184,130,0) 360deg)"
+                        }}
+                        animate={{ rotate: [0, 14, -10, 0], scale: [1, 1.04, 1] }}
+                        transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+                    />
 
-            {/* Secondary Gradient - Directional Light Effect */}
-            <div 
-                className={cn(
-                    "absolute inset-0 -z-10 transition-all duration-1000 ease-out",
-                    !isDark && "bg-gradient-to-tr from-amber-50/40 via-transparent via-60% to-rose-50/30",
-                    isDark && "bg-gradient-to-tr from-indigo-950/30 via-transparent via-60% to-purple-950/20"
-                )}
-            />
+                    {/* Caustic silk texture: moving interference mesh */}
+                    <motion.div
+                        className={cn(
+                            "absolute inset-0 -z-10 pointer-events-none transition-opacity duration-700",
+                            isDark ? "mix-blend-screen opacity-35" : "mix-blend-multiply opacity-30"
+                        )}
+                        style={{
+                            backgroundImage: isDark
+                                ? "linear-gradient(108deg, rgba(59,130,246,0.22) 0%, transparent 45%), linear-gradient(332deg, rgba(236,72,153,0.22) 0%, transparent 48%), repeating-linear-gradient(112deg, rgba(255,255,255,0.12) 0px, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 10px)"
+                                : "linear-gradient(116deg, rgba(255,199,149,0.23) 0%, transparent 44%), linear-gradient(326deg, rgba(244,114,182,0.2) 0%, transparent 45%), repeating-linear-gradient(114deg, rgba(148,163,184,0.12) 0px, rgba(148,163,184,0.12) 1px, transparent 1px, transparent 12px)",
+                            backgroundSize: "170% 170%, 170% 170%, 180px 180px"
+                        }}
+                        animate={{
+                            backgroundPosition: [
+                                "0% 0%, 0% 0%, 0px 0px",
+                                "90% 35%, 22% 78%, 65px 36px",
+                                "24% 92%, 100% 24%, 130px 76px",
+                                "0% 0%, 0% 0%, 0px 0px"
+                            ],
+                            opacity: isDark ? [0.28, 0.38, 0.3] : [0.2, 0.32, 0.22]
+                        }}
+                        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+                    />
 
-            {/* Vignette Effect - Cinematic */}
-            <div 
-                className={cn(
-                    "absolute inset-0 -z-10 pointer-events-none transition-opacity duration-1000",
-                    isDark ? "opacity-100" : "opacity-40"
-                )}
-                style={{
-                    background: isDark 
-                        ? 'radial-gradient(ellipse 70% 50% at 50% 50%, transparent 0%, transparent 50%, rgba(0,0,0,0.5) 100%)'
-                        : 'radial-gradient(ellipse 70% 50% at 50% 50%, transparent 0%, transparent 50%, rgba(255,255,255,0.4) 100%)'
-                }}
-            />
+                    {/* Floating diffused light pools */}
+                    <motion.div
+                        className={cn(
+                            "absolute -top-24 -left-24 h-[42rem] w-[42rem] -z-10 rounded-full blur-[120px] pointer-events-none transition-colors duration-700",
+                            isDark ? "bg-cyan-300/18 mix-blend-screen" : "bg-amber-200/34 mix-blend-multiply"
+                        )}
+                        animate={{ x: [0, 46, 0], y: [0, 28, 0], scale: [1, 1.08, 1], opacity: [0.5, 0.72, 0.5] }}
+                        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+                    />
 
-            {/* Animated Light Leaks */}
-            <div className="absolute inset-0 -z-5 pointer-events-none overflow-hidden">
-                {/* Primary Bokeh - Top Left */}
-                <motion.div
-                    animate={{
-                        scale: [1, 1.3, 1],
-                        opacity: [0.2, 0.4, 0.2],
-                        x: [0, 20, 0],
-                        y: [0, 10, 0]
-                    }}
-                    transition={{
-                        duration: 12,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                    className={cn(
-                        "absolute -top-20 -left-20 w-[500px] h-[500px] rounded-full blur-[100px] transition-colors duration-1000",
-                        !isDark && "bg-gradient-to-br from-amber-200/50 to-orange-200/30",
-                        isDark && "bg-gradient-to-br from-amber-500/15 to-orange-500/10"
-                    )}
-                />
-                
-                {/* Secondary Bokeh - Bottom Right */}
-                <motion.div
-                    animate={{
-                        scale: [1, 1.4, 1],
-                        opacity: [0.15, 0.3, 0.15],
-                        x: [0, -30, 0],
-                        y: [0, -20, 0]
-                    }}
-                    transition={{
-                        duration: 15,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 3
-                    }}
-                    className={cn(
-                        "absolute -bottom-32 -right-32 w-[600px] h-[600px] rounded-full blur-[120px] transition-colors duration-1000",
-                        !isDark && "bg-gradient-to-tl from-rose-200/40 to-pink-200/20",
-                        isDark && "bg-gradient-to-tl from-purple-500/10 to-indigo-500/5"
-                    )}
-                />
+                    <motion.div
+                        className={cn(
+                            "absolute -bottom-36 -right-28 h-[44rem] w-[44rem] -z-10 rounded-full blur-[130px] pointer-events-none transition-colors duration-700",
+                            isDark ? "bg-fuchsia-300/14 mix-blend-screen" : "bg-rose-200/26 mix-blend-multiply"
+                        )}
+                        animate={{ x: [0, -52, 0], y: [0, -22, 0], scale: [1, 1.1, 1], opacity: [0.46, 0.66, 0.46] }}
+                        transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                    />
 
-                {/* Accent Bokeh - Center Right */}
-                <motion.div
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        opacity: [0.1, 0.25, 0.1],
-                    }}
-                    transition={{
-                        duration: 10,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 5
-                    }}
-                    className={cn(
-                        "absolute top-1/3 -right-20 w-[400px] h-[400px] rounded-full blur-[80px] transition-colors duration-1000",
-                        !isDark && "bg-gradient-to-bl from-yellow-100/30 to-amber-100/20",
-                        isDark && "bg-gradient-to-bl from-rose-500/10 to-pink-500/5"
-                    )}
-                />
-            </div>
+                    {/* Lens vignette with soft aperture */}
+                    <div
+                        className="absolute inset-0 -z-10 pointer-events-none"
+                        style={{
+                            background: isDark
+                                ? "radial-gradient(ellipse 78% 56% at 50% 46%, rgba(5,8,20,0) 0%, rgba(5,8,20,0) 46%, rgba(2,4,10,0.56) 100%)"
+                                : "radial-gradient(ellipse 78% 56% at 50% 46%, rgba(255,255,255,0) 0%, rgba(255,255,255,0) 46%, rgba(255,244,232,0.34) 100%)"
+                        }}
+                    />
 
-            {/* Film Grain - Subtle texture */}
-            <div 
-                className={cn(
-                    "absolute inset-0 -z-5 pointer-events-none mix-blend-overlay transition-opacity duration-1000",
-                    !isDark && "opacity-[0.015]",
-                    isDark && "opacity-[0.03]"
-                )}
-                style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`
-                }}
-            />
+                    {/* Film grain pass */}
+                    <div
+                        className={cn(
+                            "absolute inset-0 -z-10 pointer-events-none mix-blend-overlay",
+                            isDark ? "opacity-[0.055]" : "opacity-[0.035]"
+                        )}
+                        style={{
+                            backgroundImage:
+                                'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.95\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")'
+                        }}
+                    />
 
-            {/* Subtle Scan Lines - Only for dark mode */}
-            {isDark && (
-                <div 
-                    className="absolute inset-0 -z-5 pointer-events-none opacity-[0.02]"
-                    style={{
-                        background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.1) 2px, rgba(0,0,0,0.1) 4px)'
-                    }}
-                />
+                    {/* Subtle scan shimmer */}
+                    <motion.div
+                        className={cn(
+                            "absolute inset-0 -z-10 pointer-events-none",
+                            isDark ? "mix-blend-screen opacity-[0.06]" : "mix-blend-multiply opacity-[0.04]"
+                        )}
+                        style={{
+                            backgroundImage:
+                                "repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(255,255,255,0.14) 3px, rgba(255,255,255,0.14) 4px)"
+                        }}
+                        animate={{ opacity: isDark ? [0.04, 0.08, 0.04] : [0.025, 0.05, 0.025], y: [0, 1, 0] }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                </>
             )}
 
             {/* Main Content */}
@@ -194,8 +172,8 @@ export function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
                         className={cn(
-                            "text-xs md:text-sm uppercase tracking-[0.3em] font-light transition-colors duration-1000",
-                            !isDark && "text-gray-500/80",
+                            "text-xs md:text-sm uppercase tracking-[0.3em] font-light transition-colors duration-1000 drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)]",
+                            !isDark && "text-white/75",
                             isDark && "text-white/60"
                         )}
                     >
@@ -207,8 +185,8 @@ export function Hero() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                         className={cn(
-                            "font-serif text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight transition-colors duration-1000",
-                            !isDark && "text-gray-900",
+                            "font-serif text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight transition-colors duration-1000 drop-shadow-[0_4px_24px_rgba(0,0,0,0.5)]",
+                            !isDark && "text-white",
                             isDark && "text-white"
                         )}
                     >
@@ -216,7 +194,7 @@ export function Hero() {
                         <motion.span 
                             className={cn(
                                 "block mt-3 italic font-light transition-colors duration-1000",
-                                !isDark && "text-gray-600",
+                                !isDark && "text-white/90",
                                 isDark && "text-white/85"
                             )}
                             initial={{ opacity: 0, x: -20 }}
@@ -232,8 +210,8 @@ export function Hero() {
                         animate={{ opacity: 1 }}
                         transition={{ duration: 1, delay: 0.8 }}
                         className={cn(
-                            "mx-auto max-w-[600px] md:text-lg font-sans font-light leading-relaxed transition-colors duration-1000",
-                            !isDark && "text-gray-500/90",
+                            "mx-auto max-w-[600px] md:text-lg font-sans font-light leading-relaxed transition-colors duration-1000 drop-shadow-[0_2px_16px_rgba(0,0,0,0.45)]",
+                            !isDark && "text-white/80",
                             isDark && "text-white/70"
                         )}
                     >

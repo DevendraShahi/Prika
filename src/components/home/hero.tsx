@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 
 export function Hero() {
     return (
-        <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
+        <section className="relative h-[85vh] md:h-[90vh] flex items-center justify-center overflow-hidden">
             {/* Background Video */}
             <div className="absolute inset-0 -z-20">
                 <video
@@ -29,10 +29,10 @@ export function Hero() {
                     transition={{ duration: 0.8, ease: "easeOut" }}
                     className="space-y-4"
                 >
-                    <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white">
+                    <h1 className="font-serif text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter text-white">
                         We Design Your <span className="text-white italic">Dreams</span>
                     </h1>
-                    <p className="mx-auto max-w-[700px] text-gray-200 md:text-xl font-sans font-light">
+                    <p className="mx-auto max-w-[700px] text-gray-200 text-sm sm:text-base md:text-xl font-sans font-light">
                         Luxury bridal and evening couture. Handcrafted for your special moments.
                     </p>
                 </motion.div>
